@@ -15,7 +15,6 @@ public class Rider implements Runnable {
 
             sharedResources.mutex.acquire();      //rider count protect, avoid new riders when bus is at stop
             sharedResources.waiting.incrementAndGet();
-//            sharedResources.waiting += 1;
             System.out.println("Rider "+sharedResources.waiting+" arrived at "+java.time.LocalTime.now());
             sharedResources.mutex.release();
 
