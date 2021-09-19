@@ -4,7 +4,6 @@ public class Main {
 
     private void startProgram() {
         System.out.println("-----Program started-----");
-
         SharedResources sharedResources = new SharedResources();
 
         Thread busScheduler = new Thread(new BusScheduler(sharedResources));

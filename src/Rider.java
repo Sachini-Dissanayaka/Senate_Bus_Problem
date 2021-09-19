@@ -6,7 +6,7 @@ public class Rider implements Runnable {
     }
 
     private void board() {
-        System.out.println("RIDER : board to bus.");
+        System.out.println("Rider boarded to bus at "+java.time.LocalTime.now());
     }
 
     @Override
@@ -15,7 +15,7 @@ public class Rider implements Runnable {
 
             sharedResources.mutex.acquire();      //rider count protect, avoid new riders when bus is at stop
             sharedResources.waiting += 1;
-            System.out.println("Rider on waiting");
+            System.out.println("Rider "+sharedResources.waiting+" arrived at "+java.time.LocalTime.now());
             sharedResources.mutex.release();
 
             sharedResources.busWait.acquire();    //Waiting for bus, lock when boarding so only 1 board at same time

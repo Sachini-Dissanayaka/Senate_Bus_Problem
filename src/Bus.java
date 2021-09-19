@@ -8,14 +8,14 @@ public class Bus implements Runnable {
 
     private void depart() {
         System.out.println("Bus loaded with " + loaded + " riders and " + sharedResources.waiting + " riders are left");
-        System.out.println("BUS DEPARTED !!! \n");
+        System.out.println("BUS DEPARTED AT "+java.time.LocalTime.now()+" !!! \n");
     }
 
     @Override
     public void run() {
         try {
             sharedResources.mutex.acquire();              //avoid new riders when bus is at stop
-            System.out.println("BUS ARRIVED !!! \n");
+            System.out.println("BUS ARRIVED AT "+java.time.LocalTime.now()+" !!! \n");
             System.out.println("Riders count wait for Bus : "+ sharedResources.waiting );
             System.out.println("Riders count who can board to Bus : "+ Math.min(sharedResources.waiting,50) );
             int maxRidersToBoard = Math.min(sharedResources.waiting,50);
