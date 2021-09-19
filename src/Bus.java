@@ -14,18 +14,18 @@ public class Bus implements Runnable {
     @Override
     public void run() {
         try {
-            sharedResources.mutex.acquire();              //avoid new riders when bus is at stop
+            sharedResources.mutex.acquire();
             System.out.println("BUS ARRIVED AT "+java.time.LocalTime.now()+" !!! \n");
             System.out.println("Riders count wait for Bus : "+ sharedResources.waiting );
-            System.out.println("Riders count who can board to Bus : "+ Math.min(sharedResources.waiting,50) );
-            int maxRidersToBoard = Math.min(sharedResources.waiting, sharedResources.max_seats);
+            System.out.println("Riders count who can board to Bus : "+ Math.min(sharedResources.waiting.get(),50) );
+            int maxRidersToBoard = Math.min(sharedResources.waiting.get(), sharedResources.max_seats);
             for (int i = 0; i < maxRidersToBoard; i++){
                 sharedResources.bus=this;
-                sharedResources.busWait.release();    //Signal riders that bus arrived
-                sharedResources.boarded.acquire();    //Wait till 50 or less are aboard
+                sharedResources.busWait.release();
+                sharedResources.boarded.acquire();
             }
 
-            sharedResources.waiting = Math.max(sharedResources.waiting-sharedResources.max_seats,0);
+            sharedResources.waiting.set(Math.max(sharedResources.waiting.get()-sharedResources.max_seats,0));
             sharedResources.mutex.release();
 
             depart();
