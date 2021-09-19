@@ -5,10 +5,10 @@ public class Main {
     private void startProgram() {
         System.out.println("-----Program started-----");
 
-        Resources resources = new Resources();
+        SharedResources sharedResources = new SharedResources();
 
-        Thread busScheduler = new Thread(new BusScheduler(resources));
-        Thread riderScheduler = new Thread(new RiderScheduler(resources));
+        Thread busScheduler = new Thread(new BusScheduler(sharedResources));
+        Thread riderScheduler = new Thread(new RiderScheduler(sharedResources));
 
         busScheduler.start();
         riderScheduler.start();

@@ -1,12 +1,12 @@
 import java.util.Random;
 
 public class BusScheduler implements Runnable {
-    private Resources resources;
+    private SharedResources sharedResources;
     private float meanTime = 2 * 60f * 1000;
     public static Random random;
 
-    public BusScheduler(Resources resources) {
-        this.resources = resources;
+    public BusScheduler(SharedResources sharedResources) {
+        this.sharedResources = sharedResources;
         random = new Random();
     }
 
@@ -19,7 +19,7 @@ public class BusScheduler implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            new Thread(new Bus(resources)).start();
+            new Thread(new Bus(sharedResources)).start();
         }
     }
 }

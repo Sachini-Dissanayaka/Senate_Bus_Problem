@@ -1,30 +1,35 @@
 public class Bus implements Runnable {
-    private Resources resources;
+    private SharedResources sharedResources;
     public int loaded=0;
 
-    public Bus(Resources resources) {
-        this.resources = resources;
+    public Bus(SharedResources sharedResources) {
+        this.sharedResources = sharedResources;
     }
 
     private void depart() {
-        System.out.println("Bus loaded with " + loaded + " riders and " + resources.waiting + " riders are left");
+        System.out.println("Bus loaded with " + loaded + " riders and " + sharedResources.waiting + " riders are left");
         System.out.println("BUS DEPARTED !!! \n");
     }
 
     @Override
     public void run() {
         try {
-            resources.mutex.acquire();              //avoid new riders when bus is at stop
+            sharedResources.mutex.acquire();              //avoid new riders when bus is at stop
             System.out.println("BUS ARRIVED !!! \n");
-            System.out.println("Riders count wait for Bus : "+ resources.waiting );
-            System.out.println("Riders count who can board to Bus : "+ Math.min(resources.waiting,50) );
-            if (resources.waiting > 0) {
-                resources.bus=this;
-                resources.busWait.release();    //Signal riders that bus arrived
-                resources.boarded.acquire();    //Wait till 50 or less are aboard
+            System.out.println("Riders count wait for Bus : "+ sharedResources.waiting );
+            System.out.println("Riders count who can board to Bus : "+ Math.min(sharedResources.waiting,50) );
+            int maxRidersToBoard = Math.min(sharedResources.waiting,50);
+            for(int i=0; i<maxRidersToBoard; i++){
+                sharedResources.bus=this;
+                sharedResources.busWait.release();    //Signal riders that bus arrived
+                sharedResources.boarded.acquire();    //Wait till 50 or less are aboard
             }
+
+            sharedResources.waiting = Math.max(sharedResources.waiting-50,0);
+            sharedResources.mutex.release();
+
             depart();
-            resources.mutex.release();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
