@@ -2,6 +2,7 @@ import java.util.concurrent.Semaphore;
 import java.time.LocalDateTime;
 
 public class SharedResources {
+    final public int max_seats = 50;
     public int waiting;
     public Semaphore busWait;
     public Semaphore boarded;

@@ -1,6 +1,6 @@
 public class Bus implements Runnable {
-    private SharedResources sharedResources;
     public int loaded=0;
+    private SharedResources sharedResources;
 
     public Bus(SharedResources sharedResources) {
         this.sharedResources = sharedResources;
@@ -18,14 +18,14 @@ public class Bus implements Runnable {
             System.out.println("BUS ARRIVED AT "+java.time.LocalTime.now()+" !!! \n");
             System.out.println("Riders count wait for Bus : "+ sharedResources.waiting );
             System.out.println("Riders count who can board to Bus : "+ Math.min(sharedResources.waiting,50) );
-            int maxRidersToBoard = Math.min(sharedResources.waiting,50);
-            for(int i=0; i<maxRidersToBoard; i++){
+            int maxRidersToBoard = Math.min(sharedResources.waiting, sharedResources.max_seats);
+            for (int i = 0; i < maxRidersToBoard; i++){
                 sharedResources.bus=this;
                 sharedResources.busWait.release();    //Signal riders that bus arrived
                 sharedResources.boarded.acquire();    //Wait till 50 or less are aboard
             }
 
-            sharedResources.waiting = Math.max(sharedResources.waiting-50,0);
+            sharedResources.waiting = Math.max(sharedResources.waiting-sharedResources.max_seats,0);
             sharedResources.mutex.release();
 
             depart();

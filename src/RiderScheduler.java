@@ -1,9 +1,9 @@
 import java.util.Random;
 
 public class RiderScheduler implements Runnable {
+    public static Random random;
     private SharedResources sharedResources;
     private float meanTime = 3f * 1000;
-    public static Random random;
 
     public RiderScheduler(SharedResources sharedResources) {
         this.sharedResources = sharedResources;

@@ -2,6 +2,10 @@ import java.io.IOException;
 
 public class Main {
 
+    public static void main(String[] args) throws IOException {
+        new Main().startProgram();
+    }
+
     private void startProgram() {
         System.out.println("-----Program started-----");
         SharedResources sharedResources = new SharedResources();
@@ -20,9 +24,5 @@ public class Main {
         }
 
         System.out.println("Program terminated");
-    }
-
-    public static void main(String[] args) throws IOException {
-        new Main().startProgram();
     }
 }
